@@ -1,0 +1,94 @@
+<?php
+class Contatos extends Model {
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //OBTER CONTATO
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  public function obter($id) {
+    $array = array();
+
+    $sql = "SELECT * FROM tb_contatos WHERE id = :id";
+    $sql = $this->db->prepare($sql);
+    $sql->bindValue(':id', $id);
+    $sql->execute();
+
+    if ($sql->rowCount() > 0) {
+      $array = $sql->fetch();
+    }
+    return $array;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //OBTER TODOS OS CONTATOS
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  public function obterTodos($id) {
+    $array = array();
+
+    $sql = "SELECT * FROM tb_contatos WHERE tb_clientes_id = :id";
+    $sql = $this->db->prepare($sql);
+    $sql->bindValue(':id', $id);
+    $sql->execute();
+
+    if ($sql->rowCount() > 0) {
+      $array = $sql->fetchAll();
+    }
+    return $array;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //DELETAR CONTATO
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  public function deletar($id) {
+    $sqlc = "SELECT tb_clientes_id FROM tb_contatos WHERE id = :id";
+    $sqlc = $this->db->prepare($sqlc);
+    $sqlc->bindValue(':id', $id);
+    $sqlc->execute();
+
+    if ($sqlc->rowCount() > 0) {
+      $array = $sqlc->fetch();
+    }
+
+    $sql = "DELETE FROM tb_contatos WHERE id = :id";
+    $sql = $this->db->prepare($sql);
+    $sql->bindValue(':id', $id);
+    $sql->execute();
+
+    return $array['tb_clientes_id'];
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //EDITAR CONTATO
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  public function editar($contato, $tipo, $id, $tb_clientes_id) {
+
+    $sql = "UPDATE tb_contatos SET contato = :contato, tipo = :tipo WHERE id = :id AND tb_clientes_id = :tb_clientes_id";
+
+    $sql = $this->db->prepare($sql);
+    $sql->bindValue(':contato', $contato);
+    $sql->bindValue(':tipo', $tipo);
+    $sql->bindValue(':id', $id);
+    $sql->bindValue(':tb_clientes_id', $tb_clientes_id);
+    $sql->execute();
+
+    return $tb_clientes_id;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //ADICIONAR CONTATO
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  public function adicionar($tb_clientes_id, $contato, $tipo) {
+
+    $sql = "INSERT INTO tb_contatos SET tb_clientes_id = :tb_clientes_id, contato = :contato, tipo = :tipo";
+
+    $sql = $this->db->prepare($sql);
+
+    $sql->bindValue(':tb_clientes_id', $tb_clientes_id);
+    $sql->bindValue(':contato', $contato);
+    $sql->bindValue(':tipo', $tipo);
+
+    $sql->execute();
+
+    return $tb_clientes_id;
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+}
+?>

@@ -1,0 +1,12 @@
+input[type="text"] {
+  text-transform:uppercase;
+}
+input[id="login"] {
+  text-transform:lowercase;
+}
+input[id="senha_autenticacao"] {
+  text-transform:lowercase;
+}
+input[id="senha_central"] {
+  text-transform:lowercase;
+}

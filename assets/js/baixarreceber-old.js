@@ -1,0 +1,105 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//CONFIGURACAO BIBLIOTECA NUMERAL
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+numeral.register('locale', 'pt-br', {
+  delimiters: {
+    thousands: '.',
+    decimal: ','
+  },
+  abbreviations: {
+    thousand: 'k',
+    million: 'm',
+    billion: 'b',
+    trillion: 't'
+  },
+  currency: {
+    symbol: 'R$'
+  }
+});
+numeral.locale('pt-br');
+
+$(document).ready(function() {
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //CONFIGURACAO MASCARA DOS CAMPOS QUANDO CARREGA A PAGINA
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  $('#data_vencimento').inputmask('dd/mm/yyyy');
+  $("#valor_original").inputmask('decimal', {
+    'alias': 'numeric',
+    'digits': 2,
+    'radixPoint': ",",
+    'digitsOptional': false
+  });
+  $("#valor_atualizado").inputmask('decimal', {
+    'alias': 'numeric',
+    'digits': 2,
+    'radixPoint': ",",
+    'digitsOptional': false
+  });
+  $("#valor_pago").inputmask('decimal', {
+    'alias': 'numeric',
+    'digits': 2,
+    'radixPoint': ",",
+    'digitsOptional': false
+  });
+  $("#desconto").inputmask('decimal', {
+    'alias': 'numeric',
+    'digits': 2,
+    'radixPoint': ",",
+    'digitsOptional': false
+  });
+  $("#acrescimo").inputmask('decimal', {
+    'alias': 'numeric',
+    'digits': 2,
+    'radixPoint': ",",
+    'digitsOptional': false
+  });
+  $("#saldo").inputmask('decimal', {
+    'alias': 'numeric',
+    'digits': 2,
+    'radixPoint': ",",
+    'digitsOptional': false
+  });
+
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//VAR
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//CALCULA VALOR DE PAGAMENTO DO TITULO
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function calculaSaldo(){
+  var valorAtualizado = $('#valor_atualizado').val().replace(',', '.');
+  var valorPago = $('#valor_pago').val().replace(',', '.');
+  var desconto = $('#desconto').val().replace(',', '.');
+  var acrescimo = $('#acrescimo').val().replace(',', '.');
+
+  var saldo = (valorAtualizado - valorPago - desconto + (+acrescimo));
+
+  if (saldo < 0) {
+    $('#btnSalvar').prop('disabled', true);
+
+  } else {
+    $('#btnSalvar').prop('disabled', false);
+  }
+  $('#saldo').val(saldo);
+
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//CASO CAMPO DESCONTO ESTEJA EM BRANCO PREENCHE COM 0
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+$('#desconto').on('blur', function(){
+  if ($('#desconto').val() < 1) {
+    $('#desconto').val('0');
+  }
+})
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//CASO CAMPO DESCONTO ESTEJA EM BRANCO PREENCHE COM 0
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+$('#acrescimo').on('blur', function(){
+  if ($('#acrescimo').val() < 1) {
+    $('#acrescimo').val('0');
+  }
+})

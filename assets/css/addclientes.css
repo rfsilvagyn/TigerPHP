@@ -1,0 +1,9 @@
+input[id="contato"] {
+  text-transform:lowercase;
+}
+input[name="contatos[contato][]"] {
+  text-transform:lowercase;
+}
+div[id="divcontatos"] {
+  height: 100px;
+}

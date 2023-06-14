@@ -1,0 +1,5 @@
+input[id="login"] {
+  text-transform:lowercase;
+}
+input[id="email"] {
+  text-transform:lowercase;
